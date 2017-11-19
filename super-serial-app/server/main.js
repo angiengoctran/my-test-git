@@ -23,14 +23,17 @@ var port = new SerialPort('/dev/cu.usbmodem1431', {
 
 function onData(data) {
   console.log(data);
-  var topic;
-  var message;
+  var topic = null;
+  var message = null;
   if (data === "Green Tea Button is on") {
-    topic = "greentea";
-    message = "on";
+    console.log("Should send the green tea is on message");
+  topic = "greentea";
+  message = "on";
   }
 
-client.publish(topic, message);
+  if (topic != null) {
+    client.publish(topic, message);
+  }
 }
 
 port.pipe(parser);
