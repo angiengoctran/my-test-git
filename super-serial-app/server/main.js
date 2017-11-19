@@ -28,10 +28,11 @@ function onData(data) {
   if (data === "Green Tea Button is on") {
     topic = "greentea";
     message = "on";
-}
+  }
 
 client.publish(topic, message);
 }
+
 port.pipe(parser);
 // our callback function must be wrapped in Meteor.bindEnvironment to avoid Fiber errors
 parser.on('data', Meteor.bindEnvironment(onData));
