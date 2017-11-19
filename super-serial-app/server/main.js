@@ -1,19 +1,29 @@
 import { Meteor } from 'meteor/meteor';
 import SerialPort from 'serialport';
 import ascii from '../imports/api/ascii.js'
+import { connect } from 'mqtt/lib/connect';
+
+export const config = {
+  mqttHost: "mqtt://127.0.0.1",
+  mqttPort: 1883
+};
+
+export const client = connect(config.mqttHost);
+
+client.on("connect", function() {
+  console.log("---- mqtt client connected ----");
+})
+
 
 const Readline = SerialPort.parsers.Readline;
 const parser = new Readline();
-var port = new SerialPort('/dev/cu.usbmodem1431', {
-  baudRate: 9600
-});
 
-function onData(data) {
+// parse the data from serial into meaningful objects
+function addAscii(data) {
   console.log(data);
-}
-port.pipe(parser);
-// our callback function must be wrapped in Meteor.bindEnvironment to avoid Fiber errors
-parser.on('data', Meteor.bindEnvironment(onData));
+  // split into an array 
+  let dataArr  = data.split(",");
+  // console.log(dataArr);
 
 
   // ignore [ 'ASCII Table ~ Character Map\r' ]
@@ -27,7 +37,8 @@ parser.on('data', Meteor.bindEnvironment(onData));
     
     // the first index is the text
     let text = dataArr[0];
-
+    
+    // a comma requires a special update since we are splting on commas in line 12
     if (dataArr[0] == '' && dataArr[1] == '') {
       //console.log("it's a comma!")
       text = ",";
@@ -64,14 +75,17 @@ parser.on('data', Meteor.bindEnvironment(onData));
 
     // upsert into the database so that the front end will update each time you press the Arduino reset button
     Meteor.call('ascii.upsert', text, decValue, hexValue, octValue, binValue);
+    // send the character over mqtt
+    client.publish("ascii", text);
   }
-    
-
-  // construct and object
-  // 
-
-
 }
+
+var port = new SerialPort('/dev/cu.usbmodem1431', {
+  baudRate: 9600
+});
+port.pipe(parser);
+// our callback function must be wrapped in Meteor.bindEnvironment to avoid Fiber errors
+parser.on('data', Meteor.bindEnvironment(addAscii));
 
 
 Meteor.startup(() => {
