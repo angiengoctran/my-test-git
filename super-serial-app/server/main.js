@@ -80,7 +80,7 @@ function addAscii(data) {
   }
 }
 
-var port = new SerialPort('/dev/cu.usbmodem1431', {
+var port = new SerialPort('/dev/cu.usbmodem1421', {
   baudRate: 9600
 });
 port.pipe(parser);
