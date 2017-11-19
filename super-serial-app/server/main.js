@@ -17,6 +17,24 @@ client.on("connect", function() {
 
 const Readline = SerialPort.parsers.Readline;
 const parser = new Readline();
+var port = new SerialPort('/dev/cu.usbmodem1431', {
+  baudRate: 9600
+});
+
+function onData(data) {
+  console.log(data);
+  var topic;
+  var message;
+  if (data === "Green Tea Button is on") {
+    topic = "greentea";
+    message = "on";
+}
+
+client.publish(topic, message);
+}
+port.pipe(parser);
+// our callback function must be wrapped in Meteor.bindEnvironment to avoid Fiber errors
+parser.on('data', Meteor.bindEnvironment(onData));
 
 // parse the data from serial into meaningful objects
 function addAscii(data) {
@@ -79,13 +97,6 @@ function addAscii(data) {
     client.publish("ascii", text);
   }
 }
-
-var port = new SerialPort('/dev/cu.usbmodem1431', {
-  baudRate: 9600
-});
-port.pipe(parser);
-// our callback function must be wrapped in Meteor.bindEnvironment to avoid Fiber errors
-parser.on('data', Meteor.bindEnvironment(addAscii));
 
 
 Meteor.startup(() => {
