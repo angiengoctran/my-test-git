@@ -25,7 +25,7 @@ function onData(data) {
   console.log(data);
   var topic = null;
   var message = null;
-  if (data === "Green Tea Button is on") {
+  if (data.trim() === "Green Tea Button is on") {
     console.log("Should send the green tea is on message");
   topic = "greentea";
   message = "on";
