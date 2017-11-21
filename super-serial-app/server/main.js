@@ -17,7 +17,7 @@ client.on("connect", function() {
 
 const Readline = SerialPort.parsers.Readline;
 const parser = new Readline();
-var port = new SerialPort('/dev/cu.usbmodem1431', {
+var port = new SerialPort('/dev/cu.usbmodem1461', {
   baudRate: 9600
 });
 
