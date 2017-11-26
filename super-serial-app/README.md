@@ -1,40 +1,9 @@
-If you have not installed Node or Meteor, follow the steps in [Setting up your development environment](https://github.com/areaofeffect/hello-world/blob/master/week8/README.md#setting-up-your-development-environment) before running this application.
+PROJECT PROPOSAL
 
-# How to run serial-mqtt-app
-## 1 
-Download these files to your computer
+For Physical Computing final project, I’m making a tool called Tea Pod that helps to make tea the correct way. Each type of tea requires different brewing temperature and steeping time. The tool will include the following features:
+* Ability to read water temperature and show user what it is, and what the target temp is for a particular tea
+* Ability for user to know which tea he/she selected
+* Ability for user to know when water temp reaches target  
+* Ability for user to know how long tea will take to steep (through interactive timer)
 
-## 2
-
-Connect your Arduino to your computer via USB and run Examples -> Communcation -> AsciiTable (found in the Arduino IDE)
-
-How to find the path to your serial port
-
-	ls -al /dev/cu*
-
-
-## 3
-Edit the `server/main.js` files on [line 83](https://github.com/areaofeffect/hello-world/blob/master/week9/in-class-apps/meteor/serial-mqtt-app/server/main.js#L83) with your serial port from step 2
-
-## 4
-In Terminal, `cd` into this directory (serial-mqtt-app) and then run the following commands:
-
-	meteor npm install serialport --save
-	meteor npm install mqtt --save
-	meteor npm install react-p5-wrapper --save
-	meteor npm install --save react react-dom
-	meteor add react-meteor-data
-	meteor
-	
-## 5
-View the application in your browser at `http://localhost:3000`
-
-## 6
-View MQTT messages in Terminal by running this command
-
-	mosquitto_sub -h 127.0.0.1 -t ascii
-	
-## 7
-Follow the instructions to run the [processing sketch in this folder](https://github.com/areaofeffect/hello-world/tree/master/week9/in-class-apps/processing) to visualize the data in the processing app.
-
-
+For this class, I want to make a mobile app that reflects all the states of that tool with a simple interface and sends alarms when the temp reaches target and when timer is up. When I have to be away from the tool, I want to have something to keep track of its activities. Plus, I don’t want to be there waiting the whole time of steeping the tea. Therefore, building an app like this would help to improve the tool’s efficiency. The app will receive data from Arduino and respond accordingly. In order to built it, I will use Meteor Mobile App, Arduino, Temp Sensor. I have not done making a interactive interface for mobile app that actually works based on data input before, so it’s going to be a learning curve. I would love to get as much help from everyone for not only building the app but also improving the idea along the way. 
