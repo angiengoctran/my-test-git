@@ -16,7 +16,7 @@ Meteor.methods({
   'tea.upsert'(type, id, start, finish) {
     check(type, String);
  
-    Teat.upsert({
+    let currentTea = Tea.upsert({
       _id: id
     },
     {
@@ -27,5 +27,6 @@ Meteor.methods({
         updatedAt: new Date(),
       }
     });
+    return currentTea.insertedId;
   }
 })
