@@ -17,7 +17,7 @@ client.on("connect", function() {
 
 const Readline = SerialPort.parsers.Readline;
 const parser = new Readline();
-var port = new SerialPort('/dev/cu.usbmodem1461', {
+var port = new SerialPort('/dev/cu.usbmodem1441', {
   baudRate: 9600
 });
 
@@ -41,7 +41,7 @@ port.pipe(parser);
 parser.on('data', Meteor.bindEnvironment(onData));
 
 // parse the data from serial into meaningful objects
-function addAscii(data) {
+/*function addAscii(data) {
   console.log(data);
   // split into an array 
   let dataArr  = data.split(",");
@@ -100,7 +100,7 @@ function addAscii(data) {
     // send the character over mqtt
     client.publish("ascii", text);
   }
-}
+}*/
 
 
 Meteor.startup(() => {
