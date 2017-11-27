@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import SerialPort from 'serialport';
-import ascii from '../imports/api/ascii.js'
+import tea from '../imports/api/tea.js'
+let currentTea = null;
 import { connect } from 'mqtt/lib/connect';
 
 export const config = {
@@ -26,10 +27,22 @@ function onData(data) {
   var topic = null;
   var message = null;
   if (data.trim() === "Green Tea Button is on") {
-    console.log("Should send the green tea is on message");
+    currentTea = Meteor.call('tea.upsert', "green", currentTea, new Date(), null);
+    console.log(currentTea);
   topic = "greentea";
   message = "on";
   }
+  if (data.trim() === "GreenTea: temp is Ready") {
+    Meteor.call('tea.update.finish', currentTea, new Date());
+    console.log(waterReady);
+  topic = "green_temp";
+  message = "waterready";
+  }
+  if (data.trim() === "GreenTea: timer is Ready") {
+    Meteor.call('tea.update.temp', currentTea, new Date());
+    console.log(timerReady);
+  topic = "green_timer";
+  message = "timerready";
 
   if (topic != null) {
     client.publish(topic, message);

@@ -28,5 +28,29 @@ Meteor.methods({
       }
     });
     return currentTea.insertedId;
+  },
+  'tea.update.finish'(id,value) {
+
+    Tea.update({
+      _id: id
+    },
+    {
+      $set: {
+        finish: value,
+        updatedAt: new Date(),
+      }
+    });
+  },
+  'tea.update.temp'(id,value) {
+
+    Tea.update({
+      _id: id
+    },
+    {
+      $set: {
+        temp: value,
+        updatedAt: new Date(),
+      }
+    });
   }
 })
